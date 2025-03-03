@@ -8,6 +8,7 @@ import frc.robot.commands.QuickSetElevator;
 import frc.robot.commands.TeleopClimb;
 import frc.robot.commands.TeleopElevator;
 import frc.robot.commands.TeleopSwerve;
+import frc.robot.commands.TestSwerve;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Climb;
 import frc.robot.subsystems.Elevator;
@@ -18,7 +19,7 @@ public class RobotContainer {
 
     public CommandXboxController joystick = new CommandXboxController(RobotConstants.DRIVE_CONTROLLER_PORT0);
     public CommandXboxController joystick1 = new CommandXboxController(RobotConstants.DRIVE_CONTROLLER_PORT1);
-     
+
     private final Climb climb = new Climb();
     private final Intake intake = new Intake();
     private final Arm arm = new Arm();
@@ -31,12 +32,13 @@ public class RobotContainer {
     private final TeleopElevator teleopElevator = new TeleopElevator(elevator, joystick1.getHID(), null);
     // private final TeleopArm teleopArm = new TeleopArm(arm, joystick1.getHID());
     private final CombinedControl combinedControl1 = new CombinedControl(intake, arm, joystick1.getHID());
+    private final TestSwerve testSwerve = new TestSwerve(swerve);
 
     public RobotContainer() {
         swerve.setDefaultCommand(teleopSwerve);
         elevator.setDefaultCommand(teleopElevator);
         // elevator.setDefaultCommand(quickSetElevator);
-        climb.setDefaultCommand(teleopClimb);
+        // climb.setDefaultCommand(teleopClimb);
         intake.setDefaultCommand(combinedControl1);
         arm.setDefaultCommand(combinedControl1);
         // arm.setDefaultCommand(teleopArm);
@@ -44,10 +46,11 @@ public class RobotContainer {
     }
 
     private void configureButtonBindings() {
-        
+
     }
 
     public Command getAutonomousCommand() {
+        swerve.setDefaultCommand(testSwerve);
         return null;
     }
 }

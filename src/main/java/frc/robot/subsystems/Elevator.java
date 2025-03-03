@@ -25,8 +25,12 @@ public class Elevator extends SubsystemBase {
         LeftElevatorMotor = new SparkMax(ElevatorConstants.LEFT_ELEVATOR_MOTOR_ID, MotorType.kBrushless);
         RightElevatorMotor = new SparkMax(ElevatorConstants.RIGHT_ELEVATOR_MOTOR_ID, MotorType.kBrushless);
 
-        SparkMaxConfig config = new SparkMaxConfig();
-        config.idleMode(IdleMode.kBrake);
+        SparkMaxConfig LeftConfig = new SparkMaxConfig();
+        LeftConfig.inverted(true);
+        LeftConfig.idleMode(IdleMode.kBrake);
+        SparkMaxConfig RightConfig = new SparkMaxConfig();
+        RightConfig.inverted(false);
+        RightConfig.idleMode(IdleMode.kBrake);
 
         LeftConstraints = new TrapezoidProfile.Constraints(
                 ElevatorConstants.ELEVATOR_MAX_VELOCITY,
@@ -75,7 +79,7 @@ public class Elevator extends SubsystemBase {
         double leftPosition = getLeftPosition();
         double rightPosition = getRightPosition();
 
-        // 限制最大/最小高度
+        // limit
         if (voltage > 0 && (leftPosition >= ElevatorConstants.ELEVATOR_MAX_POSITION ||
                 rightPosition >= ElevatorConstants.ELEVATOR_MAX_POSITION))
             voltage = 0;
@@ -88,7 +92,8 @@ public class Elevator extends SubsystemBase {
     }
 
     public void setDesiredHeight(double height) {
-        // 設定目標高度，並使用 PID 控制
+        // target height, use PID controller and feedforward to control the elevator's
+        // position
         Lcontroller.setSetpoint(height);
         Rcontroller.setSetpoint(height);
 

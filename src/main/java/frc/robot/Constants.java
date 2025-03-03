@@ -16,7 +16,7 @@ public class Constants {
     // !Swerve
     public static final class SwerveConstants {
         public static final double MAX_MODULE_SPEED = 4;
-        public static final double MAX_MODULE_ROTATIONAL_SPEED = 4;
+        public static final double MAX_MODULE_ROTATIONAL_SPEED = 8;
 
         public static final double WHEEL_BASE = 0.583;
 
@@ -42,7 +42,7 @@ public class Constants {
             RF_CONSTANTS.DriveMotorId = 11;
             RF_CONSTANTS.SteerMotorId = 12;
             RF_CONSTANTS.CANcoderId = 1;
-            RF_CONSTANTS.CANcoderOffset = -0.063965;
+            RF_CONSTANTS.CANcoderOffset = 0.026855;
         }
 
         public static final SwerveModuleConstants LF_CONSTANTS = new SwerveModuleConstants();
@@ -50,7 +50,7 @@ public class Constants {
             LF_CONSTANTS.DriveMotorId = 21;
             LF_CONSTANTS.SteerMotorId = 22;
             LF_CONSTANTS.CANcoderId = 2;
-            LF_CONSTANTS.CANcoderOffset = -0.462158;
+            LF_CONSTANTS.CANcoderOffset = 0.479248;
         }
 
         public static final SwerveModuleConstants LB_CONSTANTS = new SwerveModuleConstants();
@@ -58,7 +58,7 @@ public class Constants {
             LB_CONSTANTS.DriveMotorId = 31;
             LB_CONSTANTS.SteerMotorId = 32;
             LB_CONSTANTS.CANcoderId = 3;
-            LB_CONSTANTS.CANcoderOffset = 0.114990;
+            LB_CONSTANTS.CANcoderOffset = 0.075195;
         }
 
         public static final SwerveModuleConstants RB_CONSTANTS = new SwerveModuleConstants();
@@ -66,7 +66,7 @@ public class Constants {
             RB_CONSTANTS.DriveMotorId = 41;
             RB_CONSTANTS.SteerMotorId = 42;
             RB_CONSTANTS.CANcoderId = 4;
-            RB_CONSTANTS.CANcoderOffset = 0.052979;
+            RB_CONSTANTS.CANcoderOffset = 0.051025;
         }
 
     }
@@ -76,25 +76,20 @@ public class Constants {
         public static final int LEFT_ELEVATOR_MOTOR_ID = 2;
         public static final int RIGHT_ELEVATOR_MOTOR_ID = 1;
 
-        public static final double ELEVATOR_SPEED = 0.5;
+        public static final double ELEVATOR_SPEED = 0.3;
+        public static final double ELEVATOR_TOLERANCE = 1.0;
 
-        public static final double ELEVATOR_MAX_POSITION = 0;
+        public static final double ELEVATOR_MAX_POSITION = 155;
         public static final double ELEVATOR_MIN_POSITION = 0;
         // -73.787979
 
         public static final double ELEVATOR_DEFAULT_HEIGHT = 0;
-        public static final double ELEVATOR_L2_HEIGHT = -74.573769;
-        public static final double ELEVATOR_L4_HEIGHT = 0;
-        public static final double ELEVATOR_CORAL_STATION_HEIGHT = 0;
+        public static final double ELEVATOR_L2_HEIGHT = 75;
+        public static final double ELEVATOR_L4_HEIGHT = 150;
+        public static final double ELEVATOR_CORAL_STATION_HEIGHT = 30;
 
-        // Left Right motor?
-        // public static final double ELEVATOR_DEFAULT_HEIGHT = 0;
-        // public static final double ELEVATOR_L2_HEIGHT = 0;
-        // public static final double ELEVATOR_L4_HEIGHT = 0;
-        // public static final double ELEVATOR_CORAL_STATION_HEIGHT = 0;
-
-        public static final double ELEVATOR_MAX_VELOCITY = 4;
-        public static final double ELEVATOR_MAX_ACCELERATION = 0.3;
+        public static final double ELEVATOR_MAX_VELOCITY = 1;
+        public static final double ELEVATOR_MAX_ACCELERATION = 0.1;
 
         public static final double ELEVATOR_KP = 0.05;
         public static final double ELEVATOR_KI = 0;
@@ -102,7 +97,7 @@ public class Constants {
 
         public static final double ELEVATOR_KS = 0.1;
         public static final double ELEVATOR_KG = 0.1;
-        public static final double ELEVATOR_KV = 0.2;
+        public static final double ELEVATOR_KV = 1.2;
         public static final double ELEVATOR_KA = 0.2;
     }
 
@@ -116,15 +111,17 @@ public class Constants {
         public static final int ARM_MOTOR_ID = 3;
         public static final int ARM_CANCODER_ID = 5;
 
-        public static final Rotation2d ARM_DEFAULT_ANGLE = Rotation2d.fromRotations(1);
+        public static final double ARM_DEFAULT_OFFSET = -0.054443;
         public static final Rotation2d ARM_CORAL_STATION_ANGLE = Rotation2d.fromRotations(0.5);
         public static final Rotation2d ARM_MIN_ANGLE = Rotation2d.fromRotations(0);
         public static final Rotation2d ARM_MAX_ANGLE = Rotation2d.fromRotations(1);
-        public static final double ARM_SPEED = 1;
-        public static final boolean ARM_CANCODER_REVERSED = false;
+        public static final double ARM_SPEED = 0.1;
+        public static final double ARM_BACKSPEED = -0.1;
+        public static final double ARM_AUTO_SPEED = 0.2;
+        public static final boolean ARM_CANCODER_REVERSED = true;
 
         public static final double ARM_MAX_ANGULAR_VELOCITY = 0.1;
-        public static final double ARM_MAX_ARGULAR_ACCELERATION = 0.2;
+        public static final double ARM_MAX_ARGULAR_ACCELERATION = 0.5;
 
         public static final double ARM_KP = 0.05;
         public static final double ARM_KI = 0;
@@ -132,14 +129,14 @@ public class Constants {
 
         public static final double ARM_KS = 0.1;
         public static final double ARM_KG = 0.1;
-        public static final double ARM_KV = 0.2;
-        public static final double ARM_KA = 0.2;
+        public static final double ARM_KV = 0;
+        public static final double ARM_KA = 0;
 
         // !INTAKE
         public static final int INTAKE_MOTOR_ID = 4;
         public static final double INTAKE_CURRENT = 30.0;
-
-        public static final double INTAKING_SPEED = -0.7;
-        public static final double PLACE_SPEED = 0.7;
+        public static final double Intake_DURATION = 2.0;
+        public static final double INTAKING_SPEED = -0.9;
+        public static final double PLACE_SPEED = 0.9;
     }
 }

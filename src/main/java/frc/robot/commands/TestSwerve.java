@@ -11,8 +11,7 @@ public class TestSwerve extends Command {
 
     private final Timer timer = new Timer();
 
-
-    public TestSwerve (Swerve swerve) {
+    public TestSwerve(Swerve swerve) {
         this.swerve = swerve;
         addRequirements(swerve);
     }
@@ -24,13 +23,19 @@ public class TestSwerve extends Command {
 
     @Override
     public void execute() {
-        int step = (int)Math.floor(timer.get()) % 12;
-        if (step < 2) swerve.drive(new Translation2d(0.5, 0), 0, false);
-        else if (step < 4) swerve.drive(new Translation2d(-0.5, 0), 0, false);
-        else if (step < 6) swerve.drive(new Translation2d(0, 0.5), 0, false);
-        else if (step < 8) swerve.drive(new Translation2d(0, -0.5), 0, false);
-        else if (step < 10) swerve.drive(new Translation2d(0, 0), -2, false);
-        else if (step < 12) swerve.drive(new Translation2d(0, 0), 2, false);
+        int step = (int) Math.floor(timer.get()) % 12;
+        if (step < 2)
+            swerve.drive(new Translation2d(0.5, 0), 0, false);
+        else if (step < 4)
+            swerve.drive(new Translation2d(-0.5, 0), 0, false);
+        else if (step < 6)
+            swerve.drive(new Translation2d(0, 0.5), 0, false);
+        else if (step < 8)
+            swerve.drive(new Translation2d(0, -0.5), 0, false);
+        else if (step < 10)
+            swerve.drive(new Translation2d(0, 0), -2, false);
+        else if (step < 12)
+            swerve.drive(new Translation2d(0, 0), 2, false);
     }
 
     @Override

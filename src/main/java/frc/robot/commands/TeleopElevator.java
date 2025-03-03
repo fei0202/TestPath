@@ -8,9 +8,10 @@ import frc.robot.subsystems.Elevator;
 
 public class TeleopElevator extends Command {
     private final Elevator elevator;
-    private final XboxController joystick1; 
+    private final XboxController joystick1;
 
-    public TeleopElevator(Elevator elevator, XboxController joystick1, edu.wpi.first.math.controller.ElevatorFeedforward feedforward) {
+    public TeleopElevator(Elevator elevator, XboxController joystick1,
+            edu.wpi.first.math.controller.ElevatorFeedforward feedforward) {
         this.elevator = elevator;
         this.joystick1 = joystick1;
         addRequirements(elevator);
@@ -21,26 +22,27 @@ public class TeleopElevator extends Command {
 
         // Y/A elevator up down
         // if (joystick.getRawButton(4)) {
-        //     elevator.setElevatorSpeed(ElevatorConstants.ELEVATOR_SPEED,ElevatorConstants.ELEVATOR_SPEED);
+        // elevator.setElevatorSpeed(ElevatorConstants.ELEVATOR_SPEED,-ElevatorConstants.ELEVATOR_SPEED);
         // } else if (joystick.getRawButton(1)) {
-        //     elevator.setElevatorSpeed(-ElevatorConstants.ELEVATOR_SPEED, -ElevatorConstants.ELEVATOR_SPEED);
+        // elevator.setElevatorSpeed(-ElevatorConstants.ELEVATOR_SPEED,
+        // ElevatorConstants.ELEVATOR_SPEED);
         // } else {
-        //     elevator.setElevatorSpeed(0,0);
+        // elevator.setElevatorSpeed(0,0);
         // }
 
-        if (joystick1.getLeftY() > 0) {
-                elevator.setElevatorSpeed(ElevatorConstants.ELEVATOR_SPEED,ElevatorConstants.ELEVATOR_SPEED);
-            } else if (joystick1.getLeftY() < -0.2) {
-                elevator.setElevatorSpeed(-ElevatorConstants.ELEVATOR_SPEED, -ElevatorConstants.ELEVATOR_SPEED);
-            } else {
-                elevator.setElevatorSpeed(0,0);
+        if (joystick1.getLeftY() > 0.5) {
+            elevator.setElevatorSpeed(ElevatorConstants.ELEVATOR_SPEED, ElevatorConstants.ELEVATOR_SPEED);
+        } else if (joystick1.getLeftY() < -0.5) {
+            elevator.setElevatorSpeed(-ElevatorConstants.ELEVATOR_SPEED, -ElevatorConstants.ELEVATOR_SPEED);
+        } else {
+            elevator.setElevatorSpeed(0, 0);
         }
-    
-        double LeftPosition = elevator.getLeftPosition(); 
+
+        double LeftPosition = elevator.getLeftPosition();
         double RightPosition = elevator.getRightPosition();
-    
+
         SmartDashboard.putNumber("Left Elevator Position", LeftPosition);
         SmartDashboard.putNumber("Right Elevator Position", RightPosition);
-        
-}
+
+    }
 }

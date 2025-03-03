@@ -1,6 +1,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -9,7 +10,7 @@ import frc.robot.subsystems.Swerve;
 
 public class TeleopSwerve extends Command {
 
-    private final Swerve swerve;    
+    private final Swerve swerve;
 
     private SlewRateLimiter xLimiter = new SlewRateLimiter(3.0);
     private SlewRateLimiter yLimiter = new SlewRateLimiter(3.0);
@@ -32,24 +33,28 @@ public class TeleopSwerve extends Command {
     @Override
     public void execute() {
 
-        // if (controller.getHID().getAButtonPressed()) {
-        //     swerve.setOdometryPosition(new Pose2d());
-        //     swerve.setGyroYaw(new Rotation2d());
-        // }
+        if (controller.getHID().getRawButtonPressed(8)) {
+            swerve.setGyroYaw(0);
+            swerve.setOdometryPosition(new Pose2d());
+        }
 
         if (controller.getRightTriggerAxis() > 0.2) {
             reduction = 0.3;
+        } else if (controller.getRightTriggerAxis() > 0.5) {
+            reduction = 0.5;
+        } else if (controller.getRightTriggerAxis() > 0.7) {
+            reduction = 0.7;
         } else {
-            reduction = 0.3;
+            reduction = 1;
         }
 
         xSpeed = xLimiter.calculate(-controller.getLeftY() * reduction);
         ySpeed = yLimiter.calculate(-controller.getLeftX() * reduction);
         rotSpeed = rotLimiter.calculate(-controller.getRightX() * reduction);
 
-        // square the input to inprove driving experience
+        // square the input to improve driving experience
         xSpeed = Math.copySign(xSpeed * xSpeed, xSpeed);
-        ySpeed = Math.copySign(ySpeed * ySpeed, ySpeed);        
+        ySpeed = Math.copySign(ySpeed * ySpeed, ySpeed);
 
         swerve.drive(
                 new Translation2d(xSpeed, ySpeed).times(SwerveConstants.MAX_MODULE_SPEED),

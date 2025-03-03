@@ -22,7 +22,7 @@ public class Arm extends SubsystemBase {
     private final CANcoder ArmCancoder;
     private final PIDController AController;
     private final ArmFeedforward Afeedforward;
-    private static final double cancoderOffset = -0.005859;
+    private static final double cancoderOffset = -0.054443;
 
     public Arm() {
         ArmMotor = new SparkMax(CombinedControlConstants.ARM_MOTOR_ID, MotorType.kBrushless);
@@ -48,24 +48,28 @@ public class Arm extends SubsystemBase {
                 CombinedControlConstants.ARM_KD);
 
         Afeedforward = new ArmFeedforward(
-                CombinedControlConstants.ARM_KS, // 靜態摩擦力
-                CombinedControlConstants.ARM_KG, // 重力
-                CombinedControlConstants.ARM_KV, // 速度
-                CombinedControlConstants.ARM_KA // 加速度
-        );
+                CombinedControlConstants.ARM_KS,
+                CombinedControlConstants.ARM_KG,
+                CombinedControlConstants.ARM_KV,
+                CombinedControlConstants.ARM_KA);
+
+        setDesiredAngle(cancoderOffset);
     }
 
     public double getArmAngleRadians() {
         ArmCancoder.getAbsolutePosition().refresh();
-        return Math.toRadians(ArmCancoder.getAbsolutePosition().getValueAsDouble() -
-                cancoderOffset);
+        return Math.toRadians(ArmCancoder.getAbsolutePosition().getValueAsDouble() - cancoderOffset);
     }
 
     public void setDesiredAngle(double targetAngleRadians) {
         double currentAngle = getArmAngleRadians();
         double pidOutput = AController.calculate(currentAngle, targetAngleRadians);
         double ffOutput = Afeedforward.calculate(targetAngleRadians, 0);
-        setArmVoltage(pidOutput + ffOutput);
+        setArmSpeed(pidOutput + ffOutput);
+    }
+
+    public void setArmSpeed(double ASpeed) {
+        ArmMotor.set(ASpeed);
     }
 
     public void setArmVoltage(double voltage) {
@@ -80,7 +84,6 @@ public class Arm extends SubsystemBase {
     public void periodic() {
         SmartDashboard.putNumber("Arm Angle (radians)", getArmAngleRadians());
         SmartDashboard.putNumber("Arm Motor Position", ArmEncoder.getPosition());
-        SmartDashboard.putNumber("Arm Cancoder Raw",
-                ArmCancoder.getAbsolutePosition().getValueAsDouble());
+        SmartDashboard.putNumber("Arm Cancoder Raw", ArmCancoder.getAbsolutePosition().getValueAsDouble());
     }
 }

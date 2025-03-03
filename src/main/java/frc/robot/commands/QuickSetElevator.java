@@ -1,70 +1,91 @@
 package frc.robot.commands;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.subsystems.Elevator;
 
 public class QuickSetElevator extends Command {
     private final Elevator elevator;
-    private final PIDController Lcontroller = new PIDController(
-            ElevatorConstants.ELEVATOR_KP,
-            ElevatorConstants.ELEVATOR_KI,
-            ElevatorConstants.ELEVATOR_KD);
-    private final PIDController Rcontroller = new PIDController(
-            ElevatorConstants.ELEVATOR_KP,
-            ElevatorConstants.ELEVATOR_KI,
-            ElevatorConstants.ELEVATOR_KD);
+    private final PIDController leftController;
+    private final PIDController rightController;
     private final XboxController joystick;
+    private double targetPosition;
+    private double lastSpeedL = 0;
+    private double lastSpeedR = 0;
 
     public QuickSetElevator(Elevator elevator, XboxController joystick) {
         this.elevator = elevator;
         this.joystick = joystick;
+        this.leftController = new PIDController(
+                ElevatorConstants.ELEVATOR_KP,
+                ElevatorConstants.ELEVATOR_KI,
+                ElevatorConstants.ELEVATOR_KD);
+        this.rightController = new PIDController(
+                ElevatorConstants.ELEVATOR_KP,
+                ElevatorConstants.ELEVATOR_KI,
+                ElevatorConstants.ELEVATOR_KD);
+
+        leftController.setIntegratorRange(-0.5, 0.5);
+        rightController.setIntegratorRange(-0.5, 0.5);
+
         addRequirements(elevator);
     }
 
     @Override
+    public void initialize() {
+        targetPosition = elevator.getLeftPosition();
+        leftController.setSetpoint(targetPosition);
+        rightController.setSetpoint(targetPosition);
+    }
+
+    @Override
     public void execute() {
+        double leftPosition = elevator.getLeftPosition();
+        double rightPosition = elevator.getRightPosition();
 
-        double LeftPosition = elevator.getLeftPosition();
-        double RightPosition = elevator.getRightPosition();
+        double newTarget = targetPosition;
 
-        SmartDashboard.putNumber("Left Position", LeftPosition);
-        SmartDashboard.putNumber("Right Position", RightPosition);
-
-        SmartDashboard.putData("Elevator Controller 1", Lcontroller);
-        SmartDashboard.putData("Elevator Controller 2", Rcontroller);
-
-        double NowPosition = SmartDashboard.getNumber("Elevator Setpoint", 0);
-        if (joystick.getAButton()) {
-            Lcontroller.setSetpoint(NowPosition);
-            Rcontroller.setSetpoint(NowPosition);
-        } else if (joystick.getBButton()) {
-            Lcontroller.setSetpoint(0);
-            Rcontroller.setSetpoint(0);
+        if (joystick.getRawButton(5)) {
+            newTarget = 0;
+        } else if (joystick.getXButtonPressed()) {
+            newTarget = ElevatorConstants.ELEVATOR_DEFAULT_HEIGHT;
+        } else if (joystick.getYButtonPressed()) {
+            newTarget = ElevatorConstants.ELEVATOR_L2_HEIGHT;
+        } else if (joystick.getBButtonPressed()) {
+            newTarget = ElevatorConstants.ELEVATOR_CORAL_STATION_HEIGHT;
+        } else if (joystick.getAButtonPressed()) {
+            newTarget = ElevatorConstants.ELEVATOR_L4_HEIGHT;
         }
 
-        // 3X4Y2B1A
-        if (joystick.getRawButton(3)) {
-            Lcontroller.setSetpoint(ElevatorConstants.ELEVATOR_DEFAULT_HEIGHT);
-            Rcontroller.setSetpoint(ElevatorConstants.ELEVATOR_DEFAULT_HEIGHT);
-        } else if (joystick.getRawButton(4)) {
-            Lcontroller.setSetpoint(ElevatorConstants.ELEVATOR_L2_HEIGHT);
-            Rcontroller.setSetpoint(ElevatorConstants.ELEVATOR_L2_HEIGHT);
-            // } else if(joystick.getRawButton(2)) {
-            // Lcontroller.setSetpoint(ElevatorConstants.ELEVATOR_CORAL_STATION_HEIGHT);
-            // Rcontroller.setSetpoint(ElevatorConstants.ELEVATOR_CORAL_STATION_HEIGHT);
-            // }
-            // else if(joystick.getRawButton(1)) {
-            // Lcontroller.setSetpoint(ElevatorConstants.ELEVATOR_L4_HEIGHT);
-            // Rcontroller.setSetpoint(ElevatorConstants.ELEVATOR_L4_HEIGHT);
+        if (newTarget != targetPosition) {
+            targetPosition = newTarget;
+            leftController.setSetpoint(targetPosition);
+            rightController.setSetpoint(targetPosition);
         }
+
+        double rawLeftOutput = leftController.calculate(leftPosition);
+        double rawRightOutput = rightController.calculate(rightPosition);
+
+        double leftOutput = MathUtil.clamp(
+                rawLeftOutput, lastSpeedL - ElevatorConstants.ELEVATOR_MAX_ACCELERATION,
+                lastSpeedL + ElevatorConstants.ELEVATOR_MAX_ACCELERATION);
+        double rightOutput = MathUtil.clamp(
+                rawRightOutput, lastSpeedR - ElevatorConstants.ELEVATOR_MAX_ACCELERATION,
+                lastSpeedR + ElevatorConstants.ELEVATOR_MAX_ACCELERATION);
+
+        lastSpeedL = leftOutput;
+        lastSpeedR = rightOutput;
+
+        // Set elevator speeds to the calculated outputs
+        elevator.setElevatorSpeed(leftOutput, rightOutput);
     }
 
     @Override
     public boolean isFinished() {
-        return false;
+        return Math.abs(targetPosition - elevator.getLeftPosition()) < ElevatorConstants.ELEVATOR_TOLERANCE &&
+                Math.abs(targetPosition - elevator.getRightPosition()) < ElevatorConstants.ELEVATOR_TOLERANCE;
     }
 }

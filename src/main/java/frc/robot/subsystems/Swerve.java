@@ -20,7 +20,6 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.RobotConstants;
 import frc.robot.Constants.SwerveConstants;
 
 public class Swerve extends SubsystemBase {
@@ -30,7 +29,7 @@ public class Swerve extends SubsystemBase {
             new SwerveModule(0, SwerveConstants.RF_CONSTANTS),
             new SwerveModule(1, SwerveConstants.LF_CONSTANTS),
             new SwerveModule(2, SwerveConstants.LB_CONSTANTS),
-            new SwerveModule(3, SwerveConstants.RB_CONSTANTS)};
+            new SwerveModule(3, SwerveConstants.RB_CONSTANTS) };
     private SwerveDriveKinematics kinematics = new SwerveDriveKinematics(SwerveConstants.MODULE_TRANSLATOIN_METERS);
     private SwerveDriveOdometry odometry = new SwerveDriveOdometry(kinematics, getGyroYaw(), getModulePositions());
 
@@ -78,7 +77,6 @@ public class Swerve extends SubsystemBase {
         odometry.resetPose(new Pose2d());
 
         gyro.reset();
-        gyro.setAngleAdjustment(0);
     }
 
     public void drive(Translation2d translation, double rotation, boolean fieldRelative) {
@@ -95,10 +93,14 @@ public class Swerve extends SubsystemBase {
         setModuleStates(targetStates);
     }
 
+    public void setGyroYaw(double yaw) {
+        gyro.reset();
+        gyro.setAngleAdjustment(yaw);
+    }
+
     public Rotation2d getGyroYaw() {
         return Rotation2d.fromDegrees(gyro.getAngle());
     }
-
 
     public Pose2d getOdometryPosition() {
         return odometry.getPoseMeters();
@@ -150,6 +152,6 @@ public class Swerve extends SubsystemBase {
     }
 
     public AHRS getGyro() {
-        return gyro; 
+        return gyro;
     }
 }
