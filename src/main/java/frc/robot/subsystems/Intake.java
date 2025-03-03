@@ -15,7 +15,7 @@ public class Intake extends SubsystemBase {
     private final Timer timer = new Timer();
     private boolean isOverCurrent = false;
     public static final SparkMaxConfig INTAKER_MOTOR_CONFIGURATION = new SparkMaxConfig();
-    
+
     static {
         INTAKER_MOTOR_CONFIGURATION.inverted(false);
     }
@@ -23,11 +23,15 @@ public class Intake extends SubsystemBase {
     public Intake() {
         SparkMaxConfig IntakeConfig = new SparkMaxConfig();
         IntakeConfig.idleMode(IdleMode.kBrake);
- 
+
+    }
+
+    public double getIntakeCurrent() {
+        return IntakeMotor.getOutputCurrent();
     }
 
     public void setIntakeSpeed(double intakeSpeed) {
-        double current = IntakeMotor.getOutputCurrent(); 
+        double current = IntakeMotor.getOutputCurrent();
 
         if (current > currentLimit) {
             if (!isOverCurrent) {
@@ -36,17 +40,18 @@ public class Intake extends SubsystemBase {
                 isOverCurrent = true;
             }
 
-            if (timer.hasElapsed(3.0)) { 
-                IntakeMotor.set(0); 
+            if (timer.hasElapsed(3.0)) {
+                IntakeMotor.set(0);
             }
         } else {
             isOverCurrent = false;
             timer.stop();
-            IntakeMotor.set(intakeSpeed); 
+            IntakeMotor.set(intakeSpeed);
         }
     }
 
     public void stopIntake() {
-        IntakeMotor.stopMotor(); 
+        IntakeMotor.stopMotor();
     }
+
 }

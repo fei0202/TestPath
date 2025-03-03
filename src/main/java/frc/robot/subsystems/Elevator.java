@@ -58,7 +58,7 @@ public class Elevator extends SubsystemBase {
     }
 
     public void setElevatorSpeed(double leftSpeed, double rightSpeed) {
-        LeftElevatorMotor.set(leftSpeed);
+        LeftElevatorMotor.set(-leftSpeed);
         RightElevatorMotor.set(rightSpeed);
     }
 
@@ -80,12 +80,14 @@ public class Elevator extends SubsystemBase {
         double rightPosition = getRightPosition();
 
         // limit
-        if (voltage > 0 && (leftPosition >= ElevatorConstants.ELEVATOR_MAX_POSITION ||
-                rightPosition >= ElevatorConstants.ELEVATOR_MAX_POSITION))
-            voltage = 0;
-        if (voltage < 0 && (leftPosition <= ElevatorConstants.ELEVATOR_MIN_POSITION ||
-                rightPosition <= ElevatorConstants.ELEVATOR_MIN_POSITION))
-            voltage = 0;
+        // if (voltage > 0 && (leftPosition >= ElevatorConstants.ELEVATOR_MAX_POSITION
+        // ||
+        // rightPosition >= ElevatorConstants.ELEVATOR_MAX_POSITION))
+        // voltage = 0;
+        // if (voltage < 0 && (leftPosition <= ElevatorConstants.ELEVATOR_MIN_POSITION
+        // ||
+        // rightPosition <= ElevatorConstants.ELEVATOR_MIN_POSITION))
+        // voltage = 0;
 
         LeftElevatorMotor.setVoltage(voltage);
         RightElevatorMotor.setVoltage(voltage);

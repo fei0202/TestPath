@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 6.0,
-        "y": 6.0
+        "x": 8.176704545454545,
+        "y": 6.129005681818182
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.0,
-        "y": 7.0
+        "x": 8.176704545454545,
+        "y": 7.129005681818182
       },
       "isLocked": false,
       "linkedName": "HCR"
@@ -48,7 +48,7 @@
   "folder": "testing",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -91.0
+    "rotation": -174.28940686250033
   },
   "useDefaultConstraints": true
 }

@@ -20,16 +20,6 @@ public class TeleopElevator extends Command {
     @Override
     public void execute() {
 
-        // Y/A elevator up down
-        // if (joystick.getRawButton(4)) {
-        // elevator.setElevatorSpeed(ElevatorConstants.ELEVATOR_SPEED,-ElevatorConstants.ELEVATOR_SPEED);
-        // } else if (joystick.getRawButton(1)) {
-        // elevator.setElevatorSpeed(-ElevatorConstants.ELEVATOR_SPEED,
-        // ElevatorConstants.ELEVATOR_SPEED);
-        // } else {
-        // elevator.setElevatorSpeed(0,0);
-        // }
-
         if (joystick1.getLeftY() > 0.5) {
             elevator.setElevatorSpeed(ElevatorConstants.ELEVATOR_SPEED, ElevatorConstants.ELEVATOR_SPEED);
         } else if (joystick1.getLeftY() < -0.5) {

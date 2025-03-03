@@ -15,8 +15,8 @@ public class Constants {
 
     // !Swerve
     public static final class SwerveConstants {
-        public static final double MAX_MODULE_SPEED = 4;
-        public static final double MAX_MODULE_ROTATIONAL_SPEED = 8;
+        public static final double MAX_MODULE_SPEED = 2;
+        public static final double MAX_MODULE_ROTATIONAL_SPEED = 4;
 
         public static final double WHEEL_BASE = 0.583;
 
@@ -42,7 +42,7 @@ public class Constants {
             RF_CONSTANTS.DriveMotorId = 11;
             RF_CONSTANTS.SteerMotorId = 12;
             RF_CONSTANTS.CANcoderId = 1;
-            RF_CONSTANTS.CANcoderOffset = 0.026855;
+            RF_CONSTANTS.CANcoderOffset = 0.056641;
         }
 
         public static final SwerveModuleConstants LF_CONSTANTS = new SwerveModuleConstants();
@@ -50,7 +50,7 @@ public class Constants {
             LF_CONSTANTS.DriveMotorId = 21;
             LF_CONSTANTS.SteerMotorId = 22;
             LF_CONSTANTS.CANcoderId = 2;
-            LF_CONSTANTS.CANcoderOffset = 0.479248;
+            LF_CONSTANTS.CANcoderOffset = 1.465088;
         }
 
         public static final SwerveModuleConstants LB_CONSTANTS = new SwerveModuleConstants();
@@ -58,7 +58,7 @@ public class Constants {
             LB_CONSTANTS.DriveMotorId = 31;
             LB_CONSTANTS.SteerMotorId = 32;
             LB_CONSTANTS.CANcoderId = 3;
-            LB_CONSTANTS.CANcoderOffset = 0.075195;
+            LB_CONSTANTS.CANcoderOffset = 1.076416;
         }
 
         public static final SwerveModuleConstants RB_CONSTANTS = new SwerveModuleConstants();
@@ -66,7 +66,7 @@ public class Constants {
             RB_CONSTANTS.DriveMotorId = 41;
             RB_CONSTANTS.SteerMotorId = 42;
             RB_CONSTANTS.CANcoderId = 4;
-            RB_CONSTANTS.CANcoderOffset = 0.051025;
+            RB_CONSTANTS.CANcoderOffset = 0.046875;
         }
 
     }
@@ -77,11 +77,11 @@ public class Constants {
         public static final int RIGHT_ELEVATOR_MOTOR_ID = 1;
 
         public static final double ELEVATOR_SPEED = 0.3;
+
         public static final double ELEVATOR_TOLERANCE = 1.0;
 
         public static final double ELEVATOR_MAX_POSITION = 155;
         public static final double ELEVATOR_MIN_POSITION = 0;
-        // -73.787979
 
         public static final double ELEVATOR_DEFAULT_HEIGHT = 0;
         public static final double ELEVATOR_L2_HEIGHT = 75;
@@ -111,10 +111,21 @@ public class Constants {
         public static final int ARM_MOTOR_ID = 3;
         public static final int ARM_CANCODER_ID = 5;
 
-        public static final double ARM_DEFAULT_OFFSET = -0.054443;
+        public static final double ARM_DEFAULT_OFFSET = -0.374443;
+        public static final double ARM_HORIZON_OFFSET = -0.17;
+        public static final double ARM_CORAL_STATION_OFFSET = -0.37;
+        public static final double ARM_PUT_OFFSET = -0.37;
+        public static final double ARM_MIN_OFFSET = -0.19;
+        public static final double ARM_MAX_OFFSET = -0.45;
+
+        public static final double ARM_TOLERANCE = 0.01;
+
+        public static final Rotation2d ARM_DEFAULT_ANGLE = Rotation2d.fromRotations(0.1);;
         public static final Rotation2d ARM_CORAL_STATION_ANGLE = Rotation2d.fromRotations(0.5);
-        public static final Rotation2d ARM_MIN_ANGLE = Rotation2d.fromRotations(0);
+        public static final Rotation2d ARM_HORIZON_ANGLE = Rotation2d.fromRotations(0.8);
+        public static final Rotation2d ARM_MIN_ANGLE = Rotation2d.fromRotations(0.0032);
         public static final Rotation2d ARM_MAX_ANGLE = Rotation2d.fromRotations(1);
+
         public static final double ARM_SPEED = 0.1;
         public static final double ARM_BACKSPEED = -0.1;
         public static final double ARM_AUTO_SPEED = 0.2;
@@ -134,9 +145,9 @@ public class Constants {
 
         // !INTAKE
         public static final int INTAKE_MOTOR_ID = 4;
-        public static final double INTAKE_CURRENT = 30.0;
-        public static final double Intake_DURATION = 2.0;
+        public static final double INTAKE_CURRENT = 35.0;
+        public static final double Intake_TIME = 3.0;
         public static final double INTAKING_SPEED = -0.9;
-        public static final double PLACE_SPEED = 0.9;
+        public static final double PLACE_SPEED = 1.2;
     }
 }

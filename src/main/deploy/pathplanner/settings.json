@@ -2,14 +2,16 @@
   "robotWidth": 0.711,
   "robotLength": 0.711,
   "holonomicMode": true,
-  "pathFolders": [
-    "season",
-    "testing"
-  ],
   "autoFolders": [
     "season",
     "testing auto"
   ],
+  "pathFolders": [
+    "compete",
+    "season",
+    "testing"
+  ],
+  
   "defaultMaxVel": 3.0,
   "defaultMaxAccel": 3.0,
   "defaultMaxAngVel": 540.0,
