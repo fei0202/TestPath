@@ -48,7 +48,7 @@
   "folder": "season",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -54.0
+    "rotation": 129.29008779590552
   },
   "useDefaultConstraints": true
 }

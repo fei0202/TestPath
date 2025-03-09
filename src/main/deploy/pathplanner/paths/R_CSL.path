@@ -3,16 +3,32 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.002725,
-        "y": 2.8033249999999996
+        "x": 5.763579545454545,
+        "y": 4.015028409090909
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.309500000000001,
-        "y": 1.012249999999999
+        "x": 6.763579545454551,
+        "y": 4.015028409090909
       },
       "isLocked": false,
-      "linkedName": "REEF E"
+      "linkedName": "REEF I"
+    },
+    {
+      "anchor": {
+        "x": 3.9288068181818185,
+        "y": 6.817045454545454
+      },
+      "prevControl": {
+        "x": 6.431676136363636,
+        "y": 6.378295454545454
+      },
+      "nextControl": {
+        "x": 2.1410440546866374,
+        "y": 7.130438130217916
+      },
+      "isLocked": false,
+      "linkedName": null
     },
     {
       "anchor": {
@@ -20,8 +36,8 @@
         "y": 7.018249999999999
       },
       "prevControl": {
-        "x": 0.9360000000012947,
-        "y": 4.054250000003905
+        "x": 2.8817897727272723,
+        "y": 7.036420454545453
       },
       "nextControl": null,
       "isLocked": false,
@@ -31,7 +47,14 @@
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "PATHL1",
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": null,
+      "command": null
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -45,10 +68,10 @@
     "rotation": 129.29008779590552
   },
   "reversed": false,
-  "folder": "season",
+  "folder": "compete",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 119.99999999999999
+    "rotation": 180.0
   },
   "useDefaultConstraints": true
 }

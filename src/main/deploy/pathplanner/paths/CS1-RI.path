@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 5.290877013312038,
-        "y": 5.080053467676405
+        "x": 5.763579545454545,
+        "y": 4.015028409090909
       },
       "prevControl": {
-        "x": 4.53375,
-        "y": 6.296749999999999
+        "x": 5.006452532142507,
+        "y": 5.2317249414145035
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -119.99999999999999
+    "rotation": 180.0
   },
   "reversed": false,
   "folder": "season",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -54.0
+    "rotation": 129.29008779590552
   },
   "useDefaultConstraints": true
 }

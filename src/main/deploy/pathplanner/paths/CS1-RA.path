@@ -16,11 +16,11 @@
     },
     {
       "anchor": {
-        "x": 3.1664077186116457,
+        "x": 3.0014488636363637,
         "y": 4.188331543718503
       },
       "prevControl": {
-        "x": 2.7239456304713427,
+        "x": 2.5589867754960607,
         "y": 5.1603488331411524
       },
       "nextControl": null,
@@ -48,7 +48,7 @@
   "folder": "season",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -54.0
+    "rotation": 129.29008779590552
   },
   "useDefaultConstraints": true
 }

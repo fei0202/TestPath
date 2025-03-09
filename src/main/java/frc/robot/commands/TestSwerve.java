@@ -23,6 +23,7 @@ public class TestSwerve extends Command {
 
     @Override
     public void execute() {
+
         int step = (int) Math.floor(timer.get()) % 12;
         if (step < 2)
             swerve.drive(new Translation2d(0.5, 0), 0, false);

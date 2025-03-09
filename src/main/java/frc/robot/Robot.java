@@ -9,7 +9,6 @@ import frc.robot.Constants.RobotConstants;
 
 public class Robot extends TimedRobot {
     private Command m_autonomousCommand;
-
     private final RobotContainer m_robotContainer;
 
     public Robot() {
@@ -33,28 +32,13 @@ public class Robot extends TimedRobot {
     }
 
     @Override
-    public void disabledPeriodic() {
-    }
-
-    @Override
-    public void disabledExit() {
-    }
-
-    @Override
     public void autonomousInit() {
         m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
         if (m_autonomousCommand != null) {
             m_autonomousCommand.schedule();
         }
-    }
-
-    @Override
-    public void autonomousPeriodic() {
-    }
-
-    @Override
-    public void autonomousExit() {
+        // new PathPlannerAuto("L1").schedule();
     }
 
     @Override
@@ -62,26 +46,11 @@ public class Robot extends TimedRobot {
         if (m_autonomousCommand != null) {
             m_autonomousCommand.cancel();
         }
+        CommandScheduler.getInstance().cancelAll();
+
     }
 
     @Override
     public void teleopPeriodic() {
-    }
-
-    @Override
-    public void teleopExit() {
-    }
-
-    @Override
-    public void testInit() {
-        CommandScheduler.getInstance().cancelAll();
-    }
-
-    @Override
-    public void testPeriodic() {
-    }
-
-    @Override
-    public void testExit() {
     }
 }

@@ -1,65 +1,42 @@
-
 package frc.robot.subsystems;
 
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
-import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ElevatorConstants;
 
 public class Elevator extends SubsystemBase {
-    private final ElevatorFeedforward feedforward;
-    private final PIDController Lcontroller;
-    private final PIDController Rcontroller;
     private final SparkMax LeftElevatorMotor;
     private final SparkMax RightElevatorMotor;
-    private final TrapezoidProfile.Constraints LeftConstraints;
-    private final TrapezoidProfile.Constraints RightConstraints;
+    private final PIDController LeftController;
+    // private final PIDController RightController;
 
     public Elevator() {
         LeftElevatorMotor = new SparkMax(ElevatorConstants.LEFT_ELEVATOR_MOTOR_ID, MotorType.kBrushless);
         RightElevatorMotor = new SparkMax(ElevatorConstants.RIGHT_ELEVATOR_MOTOR_ID, MotorType.kBrushless);
+        LeftController = new PIDController(ElevatorConstants.ELEVATOR_LKP, ElevatorConstants.ELEVATOR_KI,
+                ElevatorConstants.ELEVATOR_KD);
+        // RightController = new PIDController(ElevatorConstants.ELEVATOR_RKP,
+        // ElevatorConstants.ELEVATOR_KI,
+        // ElevatorConstants.ELEVATOR_KD);
 
         SparkMaxConfig LeftConfig = new SparkMaxConfig();
-        LeftConfig.inverted(true);
         LeftConfig.idleMode(IdleMode.kBrake);
+        LeftConfig.inverted(false);
+        LeftElevatorMotor.configure(LeftConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
         SparkMaxConfig RightConfig = new SparkMaxConfig();
-        RightConfig.inverted(false);
         RightConfig.idleMode(IdleMode.kBrake);
+        RightConfig.follow(ElevatorConstants.LEFT_ELEVATOR_MOTOR_ID, true);
+        RightElevatorMotor.configure(RightConfig, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
 
-        LeftConstraints = new TrapezoidProfile.Constraints(
-                ElevatorConstants.ELEVATOR_MAX_VELOCITY,
-                ElevatorConstants.ELEVATOR_MAX_ACCELERATION);
-
-        RightConstraints = new TrapezoidProfile.Constraints(
-                ElevatorConstants.ELEVATOR_MAX_VELOCITY,
-                ElevatorConstants.ELEVATOR_MAX_ACCELERATION);
-
-        Lcontroller = new PIDController(
-                ElevatorConstants.ELEVATOR_KP,
-                ElevatorConstants.ELEVATOR_KI,
-                ElevatorConstants.ELEVATOR_KD);
-
-        Rcontroller = new PIDController(
-                ElevatorConstants.ELEVATOR_KP,
-                ElevatorConstants.ELEVATOR_KI,
-                ElevatorConstants.ELEVATOR_KD);
-
-        feedforward = new ElevatorFeedforward(
-                ElevatorConstants.ELEVATOR_KS,
-                ElevatorConstants.ELEVATOR_KG,
-                ElevatorConstants.ELEVATOR_KV,
-                ElevatorConstants.ELEVATOR_KA);
-    }
-
-    public void setElevatorSpeed(double leftSpeed, double rightSpeed) {
-        LeftElevatorMotor.set(-leftSpeed);
-        RightElevatorMotor.set(rightSpeed);
+        resetElevatorPosition();
     }
 
     public void resetElevatorPosition() {
@@ -75,37 +52,35 @@ public class Elevator extends SubsystemBase {
         return RightElevatorMotor.getEncoder().getPosition();
     }
 
-    public void setElevatorVoltage(double voltage) {
-        double leftPosition = getLeftPosition();
-        double rightPosition = getRightPosition();
+    public void setDesiredHeight(double height) {
 
-        // limit
-        // if (voltage > 0 && (leftPosition >= ElevatorConstants.ELEVATOR_MAX_POSITION
-        // ||
-        // rightPosition >= ElevatorConstants.ELEVATOR_MAX_POSITION))
-        // voltage = 0;
-        // if (voltage < 0 && (leftPosition <= ElevatorConstants.ELEVATOR_MIN_POSITION
-        // ||
-        // rightPosition <= ElevatorConstants.ELEVATOR_MIN_POSITION))
-        // voltage = 0;
-
-        LeftElevatorMotor.setVoltage(voltage);
-        RightElevatorMotor.setVoltage(voltage);
+        // SmartDashboard.putNumber("right controller output",
+        // RightController.calculate(height, getRightPosition()));
+        LeftElevatorMotor.set(-LeftController.calculate(height, getLeftPosition()));
+        // RightElevatorMotor.set(-RightController.calculate(height,
+        // getRightPosition()));
     }
 
-    public void setDesiredHeight(double height) {
-        // target height, use PID controller and feedforward to control the elevator's
-        // position
-        Lcontroller.setSetpoint(height);
-        Rcontroller.setSetpoint(height);
+    public double getLeftSpeed() {
+        return -LeftElevatorMotor.get();
+    }
 
-        double leftOutput = Lcontroller.calculate(getLeftPosition());
-        double rightOutput = Rcontroller.calculate(getRightPosition());
+    public double getRightSpeed() {
+        return RightElevatorMotor.get();
+    }
 
-        double leftFeedforward = feedforward.calculate(Lcontroller.getSetpoint());
-        double rightFeedforward = feedforward.calculate(Rcontroller.getSetpoint());
+    public void stop() {
+        LeftElevatorMotor.set(0);
+        RightElevatorMotor.set(0);
+    }
 
-        setElevatorVoltage(leftOutput + leftFeedforward);
-        setElevatorVoltage(rightOutput + rightFeedforward);
+    @Override
+    public void periodic() {
+        SmartDashboard.putNumber("Left Elevator Position", getLeftPosition());
+        SmartDashboard.putNumber("Right Elevator Position", getRightPosition());
+        SmartDashboard.putNumber("left motor output",
+                LeftElevatorMotor.getAppliedOutput());
+        SmartDashboard.putNumber("right motor output",
+                RightElevatorMotor.getAppliedOutput());
     }
 }

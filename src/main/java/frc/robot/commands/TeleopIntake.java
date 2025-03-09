@@ -9,9 +9,11 @@ import frc.robot.subsystems.Intake;
 public class TeleopIntake extends Command {
     private final Intake intake;
     private final XboxController joystick1;
-    private Timer intakeTimer = new Timer();
+    private final Timer intakeTimer = new Timer();
     private boolean isIntakeActive = false;
-    private static final double CURRENT_LIMIT = 35.0;
+    private boolean isContinuousIntake = false;
+    // private static final double CURRENT_LIMIT =
+    // CombinedControlConstants.INTAKE_CURRENT;
 
     public TeleopIntake(Intake intake, XboxController joystick1) {
         this.intake = intake;
@@ -21,37 +23,41 @@ public class TeleopIntake extends Command {
 
     @Override
     public void execute() {
-        if (intake.getIntakeCurrent() > CURRENT_LIMIT) {
-            intake.stopIntake();
-            isIntakeActive = false;
-            return;
-        }
 
-        // Y A Intake
-        if (joystick1.getYButton()) {
-            intake.setIntakeSpeed(CombinedControlConstants.PLACE_SPEED);
-            intakeTimer.reset();
-            intakeTimer.start();
-            isIntakeActive = true;
-        } else if (joystick1.getAButton()) {
-            intake.setIntakeSpeed(CombinedControlConstants.INTAKING_SPEED);
-            intakeTimer.reset();
-            intakeTimer.start();
-            isIntakeActive = true;
-        }
-
-        if (isIntakeActive && intakeTimer.get() >= CombinedControlConstants.Intake_TIME) {
-            intake.stopIntake();
-            isIntakeActive = false;
-        }
-
-        // MOVE Intake
-        // if (joystick1.getRawButton(4)) { // Y PLACE
+        // if (joystick1.getYButton()) {
         // intake.setIntakeSpeed(CombinedControlConstants.PLACE_SPEED);
-        // } else if (joystick1.getRawButton(1)) { // A IN
+        // intakeTimer.reset();
+        // intakeTimer.start();
+        // isIntakeActive = true;
+        // } else if (joystick1.getAButton()) {
         // intake.setIntakeSpeed(CombinedControlConstants.INTAKING_SPEED);
-        // } else {
-        // intake.stopIntake();
+        // intakeTimer.reset();
+        // intakeTimer.start();
+        // isIntakeActive = true;
         // }
+        // if (isIntakeActive && intakeTimer.get() >=
+        // CombinedControlConstants.Intake_TIME) {
+        // intake.stopIntake();
+        // isIntakeActive = false;
+        // }
+
+        // 7back
+        if (joystick1.getRawButton(7) || joystick1.getBButton() || joystick1.getXButton()) {
+            intake.stopIntake();
+        }
+
+        if (joystick1.getAButton()) {
+            intake.setIntakeSpeed(CombinedControlConstants.INTAKING_SPEED);
+        } else if (joystick1.getYButton()) {
+            intake.setIntakeSpeed(CombinedControlConstants.PLACE_SPEED);
+        } else {
+            intake.setIntakeSpeed(0);
+        }
+
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        intake.stopIntake();
     }
 }

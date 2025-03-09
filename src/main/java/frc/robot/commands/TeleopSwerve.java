@@ -1,6 +1,5 @@
 package frc.robot.commands;
 
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -12,21 +11,15 @@ import frc.robot.subsystems.Swerve;
 public class TeleopSwerve extends Command {
 
     private final Swerve swerve;
+    private final CommandXboxController controller;
 
-    private SlewRateLimiter xLimiter = new SlewRateLimiter(3.0);
-    private SlewRateLimiter yLimiter = new SlewRateLimiter(3.0);
-    private SlewRateLimiter rotLimiter = new SlewRateLimiter(3.0);
+    private final SlewRateLimiter xLimiter = new SlewRateLimiter(2.5);
+    private final SlewRateLimiter yLimiter = new SlewRateLimiter(2.5);
+    private final SlewRateLimiter rotLimiter = new SlewRateLimiter(2);
 
     private double xSpeed = 0.0;
     private double ySpeed = 0.0;
     private double rotSpeed = 0.0;
-
-    private double reduction = 1;
-
-    private double rotationTarget = 0.5;
-    private PIDController rotationController = new PIDController(0.01, 0, 0);
-
-    private CommandXboxController controller;
 
     public TeleopSwerve(Swerve swerve, CommandXboxController controller) {
         this.swerve = swerve;
@@ -36,32 +29,26 @@ public class TeleopSwerve extends Command {
 
     @Override
     public void execute() {
-
         if (controller.getHID().getRawButtonPressed(8)) {
+            swerve.setGyroYaw(0);
             swerve.setOdometryPosition(new Pose2d());
         }
 
-        if (controller.getRightTriggerAxis() > 0.2) {
-            reduction = 0.3;
-        } else {
-            reduction = 1;
-        }
+        double joystickMagnitude = Math.hypot(controller.getLeftX(), controller.getLeftY());
 
-        // rotationController.setSetpoint(rotationTarget);
+        double reduction = 0.3 + 0.7 * Math.pow(joystickMagnitude, 3);
 
-        xSpeed = xLimiter.calculate(-controller.getLeftY());
-        ySpeed = yLimiter.calculate(-controller.getLeftX());
-        if (controller.getRightX() > 0.2) {
-            rotSpeed = rotLimiter.calculate(-controller.getRightX() * reduction);
+        xSpeed = xLimiter.calculate(-controller.getLeftY()) * reduction * 0.8;
+        ySpeed = yLimiter.calculate(-controller.getLeftX()) * reduction * 0.8;
+
+        double rightX = controller.getRightX();
+        if (Math.abs(rightX) > 0.2) {
+            rotSpeed = rotLimiter.calculate(-rightX) * 0.6;
             rotSpeed = Math.copySign(rotSpeed * rotSpeed, rotSpeed);
-        } else if (controller.getRightX() < -0.2) {
-            rotSpeed = rotLimiter.calculate(controller.getRightX() * reduction);
-            rotSpeed = Math.copySign(-rotSpeed * rotSpeed, -rotSpeed);
         } else {
             rotSpeed = 0;
         }
 
-        // square the input to inprove driving experience
         xSpeed = Math.copySign(xSpeed * xSpeed, xSpeed);
         ySpeed = Math.copySign(ySpeed * ySpeed, ySpeed);
 
@@ -69,7 +56,6 @@ public class TeleopSwerve extends Command {
                 new Translation2d(xSpeed, ySpeed).times(SwerveConstants.MAX_MODULE_SPEED),
                 rotSpeed * SwerveConstants.MAX_MODULE_ROTATIONAL_SPEED,
                 true);
-
     }
 
     @Override

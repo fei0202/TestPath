@@ -7,31 +7,49 @@
         {
           "type": "path",
           "data": {
-            "pathName": "HC"
+            "pathName": "M-R"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "PATHL1"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "SHC1"
+            "pathName": "R_CSL"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "INTAKE"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 3.0
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "SHC2"
+            "pathName": "CSL_B3"
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "SHC3"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "SHC4"
+            "name": "B3"
           }
         }
       ]

@@ -36,9 +36,9 @@ public class SwerveModule {
         this.ModuleConstants = moduleConstants;
 
         steerPID = new PID(
-                SwerveConstants.STEER_MOTOR_KP,
-                SwerveConstants.STEER_MOTOR_KI,
-                SwerveConstants.STEER_MOTOR_KD);
+                SwerveConstants.MODULE_MOTOR_KP,
+                SwerveConstants.MODULE_MOTOR_KI,
+                SwerveConstants.MODULE_MOTOR_KD);
 
         lastAngle = new Rotation2d();
 

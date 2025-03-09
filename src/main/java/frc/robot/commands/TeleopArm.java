@@ -1,75 +1,67 @@
 package frc.robot.commands;
 
-import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.CombinedControlConstants;
 import frc.robot.subsystems.Arm;
 
 public class TeleopArm extends Command {
+
     private final Arm arm;
     private final XboxController joystick1;
+    private final XboxController joystick;
+    private final double ANGLE_CHANGE_LIMIT = 0.02;
+    private static final double ARM_MIN_ANGLE = 0.0;
+    private static final double ARM_MAX_ANGLE = 1.0;
+    private double armAngleTarget;
 
-    private Rotation2d targetAngle;
-    private double targetOffset;
-    private double lastSpeed = 0;
-
-    public TeleopArm(Arm arm, XboxController joystick1) {
+    public TeleopArm(Arm arm, XboxController joystick1, XboxController joystick) {
         this.arm = arm;
         this.joystick1 = joystick1;
+        this.joystick = joystick;
         addRequirements(arm);
     }
 
     @Override
     public void initialize() {
-        targetOffset = CombinedControlConstants.ARM_DEFAULT_OFFSET;
-        targetAngle = Rotation2d.fromRadians(arm.getAngle().getRadians());
+        arm.stopArm();
     }
 
     @Override
     public void execute() {
-        double currentAngle = arm.getAngle().getRadians();
-        double joystickYmove = joystick1.getRightY();
+        // if (joystick.getRawButton(7)) {
+        // arm.stopArm();
+        // return;
+        // }
 
-        if (joystick1.getBButtonPressed()) {
-            targetOffset = CombinedControlConstants.ARM_DEFAULT_OFFSET;
-        } else if (joystick1.getXButtonPressed()) {
-            targetOffset = CombinedControlConstants.ARM_CORAL_STATION_OFFSET;
+        // if (joystick.getRawButtonPressed(5)) {
+        // armAngleTarget = CombinedControlConstants.ARM_DEFAULT_OFFSET;
+        // }
+        // if (joystick.getRawButtonPressed(6)) {
+        // armAngleTarget = CombinedControlConstants.ARM_CORAL_STATION_OFFSET;
+        // }
+
+        // double joystickY = -joystick1.getLeftY();
+        // double angleChange = joystickY * ANGLE_CHANGE_LIMIT;
+
+        // if (Math.abs(joystickY) > 0.4) {
+        // armAngleTarget = MathUtil.clamp(armAngleTarget + angleChange, ARM_MIN_ANGLE,
+        // ARM_MAX_ANGLE);
+        // }
+
+        // arm.setArmAngle(armAngleTarget);
+
+        if (joystick1.getRightY() > 0.5) {
+            arm.setArmSpeed(-CombinedControlConstants.ARM_SPEED);
+        } else if (joystick1.getRightY() < -0.5) {
+            arm.setArmSpeed(CombinedControlConstants.ARM_BACKSPEED);
+        } else {
+            arm.setArmSpeed(0);
         }
-        targetAngle = Rotation2d.fromRadians(targetOffset);
-
-        double pidOutput = arm.getPIDController().calculate(currentAngle, targetAngle.getRadians());
-        double ffOutput = arm.getFeedforward().calculate(targetAngle.getRadians(), 0);
-        double totalOutput = pidOutput + ffOutput;
-
-        if (Math.abs(joystickYmove) > 0.2) {
-            totalOutput = joystickYmove * CombinedControlConstants.ARM_SPEED;
-        } else if (Math.abs(joystickYmove) < 0.2) {
-            totalOutput = joystickYmove * CombinedControlConstants.ARM_BACKSPEED;
-        }
-
-        // !limit
-        // double minAngle = CombinedControlConstants.ARM_MIN_ANGLE.getRadians();
-        // double maxAngle = CombinedControlConstants.ARM_MAX_ANGLE.getRadians();
-        // targetAngle = Rotation2d.fromRadians(MathUtil.clamp(targetAngle.getRadians(),
-        // minAngle, maxAngle));
-
-        totalOutput = MathUtil.clamp(totalOutput,
-                lastSpeed - CombinedControlConstants.ARM_MAX_ARGULAR_ACCELERATION,
-                lastSpeed + CombinedControlConstants.ARM_MAX_ARGULAR_ACCELERATION);
-        lastSpeed = totalOutput;
-
-        arm.setArmSpeed(totalOutput);
-    }
-
-    @Override
-    public boolean isFinished() {
-        return false;
     }
 
     @Override
     public void end(boolean interrupted) {
-        arm.setArmSpeed(0);
+        arm.stopArm();
     }
 }

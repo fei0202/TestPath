@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.290877013312038,
-        "y": 5.080053467676405
-      },
-      "prevControl": null,
-      "nextControl": {
-        "x": 6.290877013312044,
-        "y": 5.080053467676405
-      },
-      "isLocked": false,
-      "linkedName": "REEF I"
-    },
-    {
-      "anchor": {
         "x": 1.1797500000000003,
         "y": 7.018249999999999
       },
+      "prevControl": null,
+      "nextControl": {
+        "x": 2.5037247474747475,
+        "y": 6.027335858585859
+      },
+      "isLocked": false,
+      "linkedName": "CORAL STATION 1"
+    },
+    {
+      "anchor": {
+        "x": 3.0424242424242425,
+        "y": 4.157133838383839
+      },
       "prevControl": {
-        "x": 0.2823068181818187,
-        "y": 7.3074261363636355
+        "x": 1.6453125,
+        "y": 4.174573863636363
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "CORAL STATION 1"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -54.0
+    "rotation": 0.0
   },
   "reversed": false,
   "folder": "compete",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -119.99999999999999
+    "rotation": 129.29008779590552
   },
   "useDefaultConstraints": true
 }
