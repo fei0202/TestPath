@@ -1,6 +1,5 @@
 package frc.FSLib2025.math;
 
-// 差值法
 public class LinearRegression {
     
     private double[][] data;

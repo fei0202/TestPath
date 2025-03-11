@@ -11,6 +11,7 @@ public class Constants {
         public static final String CANBUS_NAME = "RTX10390";
         public static final int DRIVE_CONTROLLER_PORT0 = 0;
         public static final int DRIVE_CONTROLLER_PORT1 = 1;
+        public static final int DRIVE_CONTROLLER_PORT2 = 2;
     }
 
     // !Swerve
@@ -77,7 +78,7 @@ public class Constants {
         public static final int LEFT_ELEVATOR_MOTOR_ID = 2;
         public static final int RIGHT_ELEVATOR_MOTOR_ID = 1;
 
-        public static final double ELEVATOR_SPEED = 0.5;
+        public static final double ELEVATOR_SPEED = 1;
 
         public static final double ELEVATOR_TOLERANCE = 1.0;
 
@@ -93,10 +94,14 @@ public class Constants {
         public static final double ELEVATOR_MAX_VELOCITY = 1;
         public static final double ELEVATOR_MAX_ACCELERATION = 0.1;
 
-        public static final double ELEVATOR_LKP = 0.08;
+        public static final double CRUISE_VELOCITY = 500;
+        public static final double ACCELERATION = 1000;
+        public static final double ALLOWED_ERROR = 0.5;
+
+        public static final double ELEVATOR_LKP = 0.17;
         public static final double ELEVATOR_KI = 0;
         public static final double ELEVATOR_KD = 0;
-        public static final double ELEVATOR_RKP = 0.1;
+        public static final double ELEVATOR_RKP = 0.08;
 
         public static final double ELEVATOR_KS = 0.2;
         public static final double ELEVATOR_KG = 0.1;

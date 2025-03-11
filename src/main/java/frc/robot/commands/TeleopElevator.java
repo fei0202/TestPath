@@ -30,7 +30,7 @@ public class TeleopElevator extends Command {
         double heightChange = joystickY * HEIGHT_CHANGE_LIMIT;
 
         if (Math.abs(joystickY) > 0.4) {
-            targetHeight += heightChange * 4;
+            targetHeight += heightChange * 8;
         }
 
         if (joystick.getBButtonPressed()) {

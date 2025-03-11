@@ -28,11 +28,6 @@ public class AutoL1 extends SequentialCommandGroup {
                                 new InstantCommand(() -> swerve.setGyroYaw(0), swerve),
                                 new InstantCommand(() -> swerve.setOdometryPosition(new Pose2d()), swerve),
 
-                                new RunCommand(() -> swerve.drive(new Translation2d(0.5, 0), 0, false), swerve)
-                                                .withTimeout(2),
-                                new RunCommand(() -> swerve.drive(new Translation2d(0, 0), 0, false), swerve)
-                                                .withTimeout(1),
-
                                 new RunCommand(() -> arm.setArmSpeed(CombinedControlConstants.ARM_SPEED), arm)
                                                 .withTimeout(2),
                                 new RunCommand(() -> arm.setArmSpeed(0), arm)

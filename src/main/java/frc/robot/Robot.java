@@ -1,10 +1,13 @@
 package frc.robot;
 
+import com.pathplanner.lib.pathfinding.Pathfinding;
+
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.FSLib2025.utils.LocalADStarAK;
 import frc.robot.Constants.RobotConstants;
 
 public class Robot extends TimedRobot {
@@ -18,6 +21,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotInit() {
+        Pathfinding.setPathfinder(new LocalADStarAK());
 
     }
 
