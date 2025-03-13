@@ -79,6 +79,23 @@ public class Swerve extends SubsystemBase {
         gyro.reset();
     }
 
+    // !
+    public void correctAlignment(double x, double y, String mode) {
+        if (mode.equals("rotate")) {
+            double turnSpeed = 0.02 * x;
+            if (Math.abs(x) < 1.5) {
+                turnSpeed = 0;
+            }
+            drive(new Translation2d(0, 0), turnSpeed, true);
+        } else if (mode.equals("translate")) {
+            double forwardSpeed = 0.5 * y;
+            if (Math.abs(y) < 0.1) {
+                forwardSpeed = 0;
+            }
+            drive(new Translation2d(forwardSpeed, 0), 0, true);
+        }
+    }
+
     public void drive(Translation2d translation, double rotation, boolean fieldRelative) {
         ChassisSpeeds chassisSpeeds = fieldRelative
                 ? ChassisSpeeds.fromFieldRelativeSpeeds(translation.getX(), translation.getY(), rotation, getGyroYaw())
