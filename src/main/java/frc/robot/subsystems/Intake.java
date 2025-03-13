@@ -30,6 +30,10 @@ public class Intake extends SubsystemBase {
         }
     }
 
+    public void startIntake(double intakeSpeed) {
+        IntakeMotor.set(intakeSpeed);
+    }
+
     public void stopIntake() {
         IntakeMotor.stopMotor();
         SmartDashboard.putBoolean("Intake Stopped", true);

@@ -11,13 +11,13 @@ import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Swerve;
 
-public class AutoL1 extends SequentialCommandGroup {
+public class ForwardL1 extends SequentialCommandGroup {
         private final Elevator elevator;
         private final Arm arm;
         private final Swerve swerve;
         private final Intake intake;
 
-        public AutoL1(Elevator elevator, Arm arm, Swerve swerve, Intake intake) {
+        public ForwardL1(Elevator elevator, Arm arm, Swerve swerve, Intake intake) {
                 this.elevator = elevator;
                 this.arm = arm;
                 this.swerve = swerve;

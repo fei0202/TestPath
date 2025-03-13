@@ -11,7 +11,7 @@ public class TeleopElevator extends Command {
     private final XboxController joystick1;
     private final XboxController joystick;
     private double targetHeight;
-    private final double HEIGHT_CHANGE_LIMIT = 0.1;
+    private final double HEIGHT_CHANGE_LIMIT = 0.5;
 
     public TeleopElevator(Elevator elevator, XboxController joystick1, XboxController joystick) {
         this.elevator = elevator;
@@ -30,7 +30,7 @@ public class TeleopElevator extends Command {
         double heightChange = joystickY * HEIGHT_CHANGE_LIMIT;
 
         if (Math.abs(joystickY) > 0.4) {
-            targetHeight += heightChange * 8;
+            targetHeight += heightChange;
         }
 
         if (joystick.getBButtonPressed()) {
@@ -48,7 +48,8 @@ public class TeleopElevator extends Command {
         elevator.setDesiredHeight(targetHeight);
 
         if (joystick.getRawButtonPressed(7)) {
-            elevator.stop();
+            targetHeight = elevator.getLeftPosition();
+            // elevator.stop();
         }
 
         SmartDashboard.putNumber("Target LElevator Height", targetHeight);
