@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 import com.pathplanner.lib.config.PIDConstants;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
@@ -94,6 +95,17 @@ public class Swerve extends SubsystemBase {
             }
             drive(new Translation2d(forwardSpeed, 0), 0, true);
         }
+    }
+
+    public void followPath(int index) {
+        System.out.println("Following path: " + index);
+        PathPlannerAuto autoPath = new PathPlannerAuto("Path" + index);
+        autoPath.schedule();
+    }
+
+    public void stop() {
+        System.out.println("Stopping Swerve movement.");
+        drive(new Translation2d(0, 0), 0, true);
     }
 
     public void drive(Translation2d translation, double rotation, boolean fieldRelative) {
